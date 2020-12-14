@@ -38,35 +38,10 @@
 
 <script>
 export default {
-  data() {
-    return {
-      meetups: [
-        {
-          imageUrl:
-            "https://technext.ng/wp-content/uploads/2018/08/TEF-Forum-2017-4-750x354.jpg",
-          id: "hdhsjjueuurrufnfnf",
-          title: "Meetup In Lagos",
-        },
-        {
-          imageUrl:
-            "https://techpoint.africa/wp-content/uploads/2018/02/TECHPOINT-BUILD-Event-2-55-of-99-1024x683.jpg",
-          id: "hdhsjkwiujeeuue",
-          title: "Meetup In Abuja",
-        },
-        {
-          imageUrl:
-            "https://techpoint.africa/wp-content/uploads/2018/02/google.jpeg",
-          id: "oeoiruirnncnc",
-          title: "Meetup In Ibadan",
-        },
-        {
-          imageUrl:
-            "https://cdn.movemeback.com/media/thumbnails/images/lagos-business-academy-how-to-build-your-tech-startup-event-cover-20190630-18195239/dd658dc20d402a5dfd01f672b176f72b.jpg",
-          id: "nfnjskaalalalsmks",
-          title: "Meetup In Port Harcourt",
-        },
-      ],
-    };
+  computed: {
+    meetups() {
+      return this.$store.getters.featuredMeetups;
+    },
   },
   methods: {
     onLoadMeetup(id) {
