@@ -17,7 +17,7 @@
                 <v-card-title primary-title>
                   <div>
                     <h5 class="white--text mb-0 text-h5">{{ meetup.title }}</h5>
-                    <div class="text-subtitle-2">{{ meetup.date }}</div>
+                    <div class="text-subtitle-2">{{ parseDate(meetup.date)}}</div>
                   </div>
                 </v-card-title>
                 <v-card-actions>
@@ -42,6 +42,10 @@ export default {
       return this.$store.getters.loadedMeetups;
     },
   },
-  methods: {},
+  methods: {
+    parseDate(date) {
+      return new Date(date);
+    },
+  },
 };
 </script>
