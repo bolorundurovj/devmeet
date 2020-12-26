@@ -14,13 +14,10 @@
           ></v-img>
           <v-card-text>
             <div class="info--text">
-              {{ parseDate(meetup.date) }} - Lagos, Nigeria
+              {{ parseDate(meetup.date) }} - {{ meetup.location }}
             </div>
             <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id
-              veritatis illo tempore ab ullam voluptatem, autem magni
-              perferendis. Est autem iusto ratione qui neque a tempora veritatis
-              earum consectetur in!
+              {{ meetup.description }}
             </div>
           </v-card-text>
           <v-card-actions>

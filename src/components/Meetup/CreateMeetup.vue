@@ -52,6 +52,20 @@
             required
           ></v-select>
 
+          <v-row justify="start">
+            <v-flex xs11 sm8>
+              <h3>Choose a Date and Time</h3>
+            </v-flex>
+            <v-col>
+              <v-date-picker v-model="date"></v-date-picker>
+              {{ date }} {{ submittableDateTime }}
+            </v-col>
+            <v-col>
+              <v-time-picker v-model="time" format="ampm"></v-time-picker>
+              <!-- {{time}} -->
+            </v-col>
+          </v-row>
+
           <!-- <v-checkbox
             v-model="checkbox"
             :rules="[(v) => !!v || 'You must agree to continue!']"
@@ -88,6 +102,9 @@ export default {
     descriptionRules: [(v) => !!v || "Description is required"],
     select: null,
     items: ["1-20", "21-50", "51-100", "Above 100"],
+    date: new Date().toISOString().substr(0, 10),
+    time: new Date(),
+    // date: new Date().toISOString().substr(0, 10),
   }),
   computed: {
     formIsValid() {
@@ -97,6 +114,19 @@ export default {
         this.imageUrl !== "" &&
         this.description !== ""
       );
+    },
+    submittableDateTime() {
+      const date = new Date(this.date);
+      if (typeof this.time === "string") {
+        const hours = this.time.match(/^(\d+)/)[1];
+        const minutes = this.time.match(/:(\d+)/)[1];
+        date.setHours(hours);
+        date.setMinutes(minutes);
+      } else {
+        date.setHours(this.time.getHours());
+        date.setMinutes(this.time.getMinutes());
+      }
+      return date;
     },
   },
 
@@ -119,7 +149,7 @@ export default {
         location: this.location,
         imageUrl: this.imageUrl,
         description: this.description,
-        date: new Date(),
+        date: this.submittableDateTime,
       };
       this.$store.dispatch("createMeetup", meetupData);
       this.$router.push("/meetups");
