@@ -43,14 +43,15 @@
               label="Do you agree to our T&C's?"
               required
             ></v-checkbox>
+            {{ valid }}
 
             <v-btn
               :disabled="!valid"
               color="success"
               class="mr-4"
-              @click="validate"
+              @click="onSignup"
             >
-              Sign In
+              Sign Up
             </v-btn>
           </v-form>
         </v-card>
@@ -62,35 +63,51 @@
 <script>
 export default {
   data: () => ({
-    valid: true,
-    name: "",
+    valid: false,
+    name: null,
     nameRules: [
       (v) => !!v || "Name is required",
       (v) => (v && v.length <= 30) || "Name must be less than 30 characters",
     ],
-    email: "",
+    email: null,
     emailRules: [
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
-    password: "",
-    comparePassword: "",
+    password: null,
+    comparePassword: null,
     comparePasswordRules: [
       (v) => !!v || "Confirm Password is required",
       (v) => this.comparePassword !== this.password || "Passwords Do Not Match",
     ],
     checkbox: false,
   }),
-
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+  },
+  watch: {
+    user (value) {
+      if (value !== null && value !== undefined) {
+        this.$router.push('/')
+      }
+    }
+  },
   methods: {
     validate() {
       this.$refs.form.validate();
     },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
+    onSignup() {
+      if (this.valid) {
+        this.$store.dispatch("signUserUp", {
+          email: this.email,
+          password: this.password,
+          name: this.name,
+        });
+      } else {
+        alert("Please fill the form");
+      }
     },
   },
 };

@@ -16,16 +16,18 @@
               :rules="[(v) => !!v || 'Password is required']"
               label="Password"
               required
+              type="password"
             ></v-text-field>
 
             <v-btn
               :disabled="!valid"
               color="success"
               class="mr-4"
-              @click="validate"
+              @click="onSignin"
             >
-              Sign Up
+              Sign In
             </v-btn>
+            {{ valid }}
           </v-form>
         </v-card>
       </v-flex>
@@ -36,24 +38,40 @@
 <script>
 export default {
   data: () => ({
-    valid: true,
-    email: "",
+    valid: false,
+    email: null,
     emailRules: [
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
     ],
-    password: "",
+    password: null,
   }),
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+  },
+  watch: {
+    user(value) {
+      if (value !== null && value !== undefined) {
+        this.$router.push("/");
+      }
+    },
+  },
 
   methods: {
     validate() {
       this.$refs.form.validate();
     },
-    reset() {
-      this.$refs.form.reset();
-    },
-    resetValidation() {
-      this.$refs.form.resetValidation();
+    onSignin() {
+      if (this.valid) {
+        this.$store.dispatch("signUserIn", {
+          email: this.email,
+          password: this.password,
+        });
+      } else {
+        alert("Please fill the form");
+      }
     },
   },
 };

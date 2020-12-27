@@ -39,7 +39,7 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title>John Leider</v-list-item-title>
+          <v-list-item-title>{{ getUserName }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
@@ -88,21 +88,45 @@ export default {
 
   data: () => ({
     sideNav: false,
-    menuItems: [
-      {
-        title: "View Meetups",
-        icon: "mdi-account-supervisor",
-        link: "/meetups",
-      },
-      {
-        title: "Organize Meetups",
-        icon: "mdi-map-marker",
-        link: "/meetup/new",
-      },
-      { title: "Profile", icon: "mdi-account", link: "/profile" },
-      { title: "Sign Up", icon: "mdi-account-lock", link: "/register" },
-      { title: "Sign In", icon: "mdi-lock-open", link: "/login" },
-    ],
   }),
+  computed: {
+    menuItems() {
+      let menuItems = [
+        { title: "Sign Up", icon: "mdi-account-lock", link: "/register" },
+        { title: "Sign In", icon: "mdi-lock-open", link: "/login" },
+      ];
+      if (this.userIsAuthenticated) {
+        menuItems = [
+          {
+            title: "View Meetups",
+            icon: "mdi-account-supervisor",
+            link: "/meetups",
+          },
+          {
+            title: "Organize Meetups",
+            icon: "mdi-map-marker",
+            link: "/meetup/new",
+          },
+          { title: "Profile", icon: "mdi-account", link: "/profile" },
+        ];
+      }
+      return menuItems;
+    },
+    userIsAuthenticated() {
+      return (
+        this.$store.getters.user !== null &&
+        this.$store.getters.user !== undefined
+      );
+    },
+    getUserName() {
+      if (this.$store.getters.user !== null) {
+        return this.$store.getters.user.name !== null
+        ? this.$store.getters.user.name
+        : "Anon";
+      } else {
+        return 'Unauthenticated'
+      }
+    },
+  },
 };
 </script>
