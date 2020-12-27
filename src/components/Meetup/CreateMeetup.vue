@@ -58,7 +58,7 @@
             </v-flex>
             <v-col>
               <v-date-picker v-model="date"></v-date-picker>
-              {{ date }} {{ submittableDateTime }}
+              <!-- {{ date }} || {{ submittableDateTime }} -->
             </v-col>
             <v-col>
               <v-time-picker v-model="time" format="ampm"></v-time-picker>

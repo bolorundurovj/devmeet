@@ -14,7 +14,7 @@
           ></v-img>
           <v-card-text>
             <div class="info--text">
-              {{ parseDate(meetup.date) }} - {{ meetup.location }}
+              {{ meetup.date | date }} - {{ meetup.location }}
             </div>
             <div>
               {{ meetup.description }}
