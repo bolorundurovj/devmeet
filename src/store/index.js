@@ -89,6 +89,8 @@ export const store = new Vuex.Store({
       },
     ],
     user: null,
+    loading: false,
+    authError: null,
   },
   mutations: {
     createMeetup(state, payload) {
