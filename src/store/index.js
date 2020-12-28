@@ -90,7 +90,8 @@ export const store = new Vuex.Store({
     ],
     user: null,
     loading: false,
-    authError: null,
+    error: null,
+    success: null,
   },
   mutations: {
     createMeetup(state, payload) {
@@ -98,6 +99,21 @@ export const store = new Vuex.Store({
     },
     setUser(state, payload) {
       state.user = payload;
+    },
+    setLoading(state, payload) {
+      state.loading = payload;
+    },
+    setError(state, payload) {
+      state.error = payload;
+    },
+    clearError(state) {
+      state.error = null;
+    },
+    setSuccess(state, payload) {
+      state.success = payload;
+    },
+    clearSuccess(state) {
+      state.success = null;
     },
   },
   actions: {
@@ -120,11 +136,15 @@ export const store = new Vuex.Store({
       commit('createMeetup', meetup);
     },
     signUserUp({ commit }, payload) {
+      commit('setLoading', true);
+      commit('clearError');
       firebase.default
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then((user) => {
-          user.user.updateProfile({ displayName: payload.name }).then(() => {});
+          user.user.updateProfile({ displayName: payload.name }).then(() => {
+            commit('setLoading', false);
+          });
           alert('Registered Successfully');
           // console.log(user);
           const newUser = {
@@ -140,10 +160,15 @@ export const store = new Vuex.Store({
           commit('setUser', newUser);
         })
         .catch((err) => {
-          alert(err);
+          commit('setLoading', false);
+          commit('setError', err);
+          // console.log(err);
+          // alert(err);
         });
     },
     signUserIn({ commit }, payload) {
+      commit('setLoading', true);
+      commit('clearError');
       firebase.default
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
@@ -161,6 +186,7 @@ export const store = new Vuex.Store({
             .doc(user.user.uid)
             .get()
             .then((d) => {
+              commit('setLoading', false);
               console.log(d.data());
               user_data = d.data();
               userData.registeredMeetups = user_data.registeredMeetups;
@@ -168,7 +194,9 @@ export const store = new Vuex.Store({
           commit('setUser', userData);
         })
         .catch((err) => {
-          alert(err);
+          commit('setLoading', false);
+          commit('setError', err);
+          // alert(err);
         });
     },
   },
@@ -190,6 +218,12 @@ export const store = new Vuex.Store({
     },
     user(state) {
       return state.user;
+    },
+    error(state) {
+      return state.error;
+    },
+    loading(state) {
+      return state.loading;
     },
   },
 });

@@ -5,10 +5,12 @@ import vuetify from './plugins/vuetify';
 import { store } from './store';
 import DateFilter from './filters/date';
 import * as firebase from 'firebase';
+import AlertCmp from './components/Shared/Alert.vue';
 
 Vue.config.productionTip = false;
 
 Vue.filter('date', DateFilter);
+Vue.component('app-alert', AlertCmp);
 
 new Vue({
   router,
