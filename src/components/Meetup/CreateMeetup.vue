@@ -72,7 +72,7 @@
             label="Do you agree to our terms?"
             required
           ></v-checkbox> -->
-
+          <!-- {{ submittableDateTime }} -->
           <v-btn
             :disabled="!formIsValid"
             color="success"
@@ -150,6 +150,7 @@ export default {
         imageUrl: this.imageUrl,
         description: this.description,
         date: this.submittableDateTime,
+        size: this.select,
       };
       this.$store.dispatch("createMeetup", meetupData);
       this.$router.push("/meetups");

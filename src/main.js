@@ -28,5 +28,7 @@ new Vue({
       appId: '1:525950512424:web:3e55214cd53533c93e741d',
       measurementId: 'G-3HQG4EJCJF',
     });
+
+    store.dispatch("loadMeetups");
   },
 }).$mount('#app');
