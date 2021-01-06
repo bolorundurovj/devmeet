@@ -49,7 +49,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <RegisterDialog v-if="!userIsCreator" :meetup="meetup"/>
+            <RegisterDialog v-if="!userIsCreator" :meetup="meetup" />
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -62,8 +62,8 @@ import RegisterDialog from "./Registration/RegisterDialog.vue";
 
 export default {
   props: ["id"],
-  components:{
-    RegisterDialog
+  components: {
+    RegisterDialog,
   },
   computed: {
     meetup() {

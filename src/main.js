@@ -6,9 +6,9 @@ import { store } from './store';
 import DateFilter from './filters/date';
 import * as firebase from 'firebase';
 import AlertCmp from './components/Shared/Alert.vue';
-import EditMeetupDialog from "./components/Meetup/Edit/EditMeetupDialog.vue";
-import EditMeetupDateDialog from "./components/Meetup/Edit/EditMeetupDateDialog.vue";
-import RegisterDialog from "./components/Meetup/Registration/RegisterDialog.vue";
+import EditMeetupDialog from './components/Meetup/Edit/EditMeetupDialog.vue';
+import EditMeetupDateDialog from './components/Meetup/Edit/EditMeetupDateDialog.vue';
+import RegisterDialog from './components/Meetup/Registration/RegisterDialog.vue';
 
 Vue.config.productionTip = false;
 
@@ -36,11 +36,16 @@ new Vue({
     });
     firebase.default.auth().onAuthStateChanged((user) => {
       if (user) {
-        firebase.default.firestore().collection('meetup_users').doc(user.uid).get().then(data => {
-          let userData = data.data();
-          user.data = userData;
-          store.dispatch('autoLogin', user);
-        })
+        firebase.default
+          .firestore()
+          .collection('meetup_users')
+          .doc(user.uid)
+          .get()
+          .then((data) => {
+            let userData = data.data();
+            user.data = userData;
+            store.dispatch('autoLogin', user);
+          });
       }
     });
 

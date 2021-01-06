@@ -32,13 +32,15 @@
           <v-btn color="red" text @click="dialog = false"> Cancel </v-btn>
           <v-btn
             v-if="!userIsRegistered"
-            color="primary"
+            color="success"
             text
             @click="onRegister"
           >
-            Save
+            Confirm
           </v-btn>
-          <v-btn v-else color="red" text @click="onUnregister"> Save </v-btn>
+          <v-btn v-else color="success" text @click="onUnregister">
+            Confirm
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
