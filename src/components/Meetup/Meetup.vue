@@ -16,6 +16,9 @@
             <div class="info--text">
               {{ meetup.date | date }} - {{ meetup.location }}
             </div>
+            <div class="info--text">
+              {{ meetup.size ? meetup.size + " Slots" : "All are welcome" }}
+            </div>
             <div>
               {{ meetup.description }}
             </div>
