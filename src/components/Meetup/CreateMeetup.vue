@@ -59,13 +59,18 @@
           >
           </v-textarea>
 
-          <v-select
+          <!-- <v-select
             v-model="select"
             :items="items"
             :rules="[(v) => !!v || 'This is required']"
             label="Meetup Size"
             required
-          ></v-select>
+          ></v-select> -->
+
+          <v-text-field
+            v-model="select"
+            label="Slots Available"
+          ></v-text-field>
 
           <v-row justify="start">
             <v-flex xs11 sm8>
