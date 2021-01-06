@@ -100,7 +100,7 @@ export default {
     },
     loading() {
       return this.$store.getters.loading;
-    }
+    },
   },
   watch: {
     user(value) {

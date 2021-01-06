@@ -38,7 +38,9 @@
     </v-layout>
     <v-layout row wrap justify-center class="mb-4 mt-2 justify-content-center">
       <v-flex xs12 class="text-center mb-4">
-        <p class="mx-auto" v-if="meetups.length > 0">Join Our Awesome Meetups</p>
+        <p class="mx-auto" v-if="meetups.length > 0">
+          Join Our Awesome Meetups
+        </p>
         <p class="mx-auto" v-if="meetups.length < 1">No meetups yet</p>
       </v-flex>
     </v-layout>

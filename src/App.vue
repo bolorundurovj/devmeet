@@ -22,6 +22,12 @@
             {{ item.title }}
           </v-btn>
         </v-toolbar-items>
+        <v-toolbar-items v-if="userIsAuthenticated" class="d-none d-sm-block">
+          <v-btn depressed @click="onLogout">
+            <v-icon left>mdi-exit-to-app</v-icon>
+            Logout
+          </v-btn>
+        </v-toolbar-items>
         <v-switch
           v-model="$vuetify.theme.dark"
           hint="This toggles Dark Mode"
@@ -61,6 +67,19 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item>
+          <v-btn depressed @click="onLogout">
+            <v-list-item-icon>
+            <v-icon>mdi-exit-to-app</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title>
+              Logout
+            </v-list-item-title>
+          </v-list-item-content>
+          </v-btn>
+        </v-list-item>
+        <v-list-item>
           <v-list-item-content>
             <v-switch
               v-model="$vuetify.theme.dark"
@@ -89,6 +108,11 @@ export default {
   data: () => ({
     sideNav: false,
   }),
+  methods: {
+    onLogout(){
+      this.$store.dispatch('logout')
+    }
+  },
   computed: {
     menuItems() {
       let menuItems = [
@@ -121,10 +145,10 @@ export default {
     getUserName() {
       if (this.$store.getters.user !== null) {
         return this.$store.getters.user.name !== null
-        ? this.$store.getters.user.name
-        : "Anon";
+          ? this.$store.getters.user.name
+          : "Anon";
       } else {
-        return 'Unauthenticated'
+        return "Unauthenticated";
       }
     },
   },
