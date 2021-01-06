@@ -42,6 +42,21 @@ export const store = new Vuex.Store({
       }
       state.loadedMeetups.push(payload);
     },
+    deleteMeetup(state, payload) {
+      let meetups = state.loadedMeetups;
+      const meetup = state.loadedMeetups.find((meetup) => {
+        return meetup.id === payload.id;
+      });
+      if (meetup) {
+        for (var i = 0; i < meetups.length; i++) {
+          if (meetups[i].id === payload.id) {
+            meetups.splice(i, 1);
+            i--;
+          }
+        }
+        state.loadedMeetups = meetups;
+      }
+    },
     setUser(state, payload) {
       state.user = payload;
     },
@@ -159,8 +174,23 @@ export const store = new Vuex.Store({
           commit('setLoading', false);
         })
         .catch((err) => {
-          // alert(err);
-          console.log(err);
+          alert(err);
+          commit('setLoading', false);
+        });
+    },
+    deleteMeetup({ commit }, payload) {
+      commit('setLoading', true);
+      firebase.default
+        .database()
+        .ref('meetups')
+        .child(payload.id)
+        .remove()
+        .then((data) => {
+          commit('deleteMeetup', { id: payload.id });
+          commit('setLoading', false);
+        })
+        .catch((err) => {
+          alert(err);
           commit('setLoading', false);
         });
     },

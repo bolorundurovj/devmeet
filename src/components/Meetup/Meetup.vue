@@ -8,6 +8,7 @@
             <template v-if="userIsCreator">
               <v-spacer></v-spacer>
               <v-btn
+                @click="deleteMeetup"
                 class="mx-2"
                 fab
                 dark
@@ -17,7 +18,8 @@
               >
                 <v-icon dark>mdi-delete</v-icon>
               </v-btn>
-              <app-edit-meetup-dialog :meetup="meetup"
+              <app-edit-meetup-dialog
+                :meetup="meetup"
                 title="Edit Meetup"
               ></app-edit-meetup-dialog>
             </template>
@@ -73,6 +75,13 @@ export default {
   methods: {
     parseDate(date) {
       return new Date(date);
+    },
+    deleteMeetup() {
+      const check = confirm("Are you sure?");
+      if (check) {
+        this.$store.dispatch("deleteMeetup", { id: this.id });
+        this.$router.push("/meetups");
+      }
     },
   },
 };
