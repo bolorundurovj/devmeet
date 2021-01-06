@@ -33,6 +33,12 @@
           <v-card-text>
             <div class="info--text">
               {{ meetup.date | date }} - {{ meetup.location }}
+              <template v-if="userIsCreator">
+              <app-edit-meetup-date-dialog
+                :meetup="meetup"
+                title="Edit Meetup DateTime"
+              ></app-edit-meetup-date-dialog>
+            </template>
             </div>
             <div class="info--text">
               {{ meetup.size ? meetup.size + " Slots" : "All are welcome" }}

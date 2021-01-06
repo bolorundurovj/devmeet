@@ -144,6 +144,7 @@ export const store = new Vuex.Store({
         });
     },
     updateMeetupDetails({ commit }, payload) {
+      console.log(payload);
       commit('setLoading', true);
       const updateObj = {
         id: payload.id,

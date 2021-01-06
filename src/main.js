@@ -7,12 +7,14 @@ import DateFilter from './filters/date';
 import * as firebase from 'firebase';
 import AlertCmp from './components/Shared/Alert.vue';
 import EditMeetupDialog from "./components/Meetup/Edit/EditMeetupDialog.vue";
+import EditMeetupDateDialog from "./components/Meetup/Edit/EditMeetupDateDialog.vue";
 
 Vue.config.productionTip = false;
 
 Vue.filter('date', DateFilter);
 Vue.component('app-alert', AlertCmp);
-Vue.component('app-edit-meetup-dialog', EditMeetupDialog)
+Vue.component('app-edit-meetup-dialog', EditMeetupDialog);
+Vue.component('app-edit-meetup-date-dialog', EditMeetupDateDialog);
 
 new Vue({
   router,
