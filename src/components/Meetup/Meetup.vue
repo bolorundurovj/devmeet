@@ -34,11 +34,11 @@
             <div class="info--text">
               {{ meetup.date | date }} - {{ meetup.location }}
               <template v-if="userIsCreator">
-              <app-edit-meetup-date-dialog
-                :meetup="meetup"
-                title="Edit Meetup DateTime"
-              ></app-edit-meetup-date-dialog>
-            </template>
+                <app-edit-meetup-date-dialog
+                  :meetup="meetup"
+                  title="Edit Meetup DateTime"
+                ></app-edit-meetup-date-dialog>
+              </template>
             </div>
             <div class="info--text">
               {{ meetup.size ? meetup.size + " Slots" : "All are welcome" }}
@@ -49,7 +49,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn class="primary">Register</v-btn>
+            <RegisterDialog v-if="!userIsCreator" :meetup="meetup"/>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -58,8 +58,13 @@
 </template>
 
 <script>
+import RegisterDialog from "./Registration/RegisterDialog.vue";
+
 export default {
   props: ["id"],
+  components:{
+    RegisterDialog
+  },
   computed: {
     meetup() {
       return this.$store.getters.loadedMeetup(this.id);
