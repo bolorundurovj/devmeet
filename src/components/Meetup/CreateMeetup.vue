@@ -20,12 +20,27 @@
             label="Location"
             required
           ></v-text-field>
-          <v-text-field
+          <!-- <v-text-field
             v-model="imageUrl"
             :rules="imageRules"
             label="Image URL"
             required
-          ></v-text-field>
+          ></v-text-field> -->
+          <v-file-input
+            label="Add Image"
+            filled
+            prepend-icon="mdi-camera"
+            accept="image/*"
+            @change="uploadImage($event)"
+            :loading="loading"
+            :disabled="loading"
+          >
+            <template v-slot:loader>
+              <span class="custom-loader">
+                <v-icon light>mdi-cached</v-icon>
+              </span>
+            </template>
+          </v-file-input>
           <v-layout row>
             <v-flex xs11 sm8>
               <img
@@ -128,6 +143,12 @@ export default {
       }
       return date;
     },
+    loading() {
+      return this.$store.getters.loading;
+    },
+    imageURL() {
+      return this.$store.getters.uploadedImage;
+    },
   },
 
   methods: {
@@ -154,6 +175,17 @@ export default {
       };
       this.$store.dispatch("createMeetup", meetupData);
       this.$router.push("/meetups");
+    },
+    uploadImage(file) {
+      console.log(file);
+      this.$store.dispatch("uploadImage", file);
+    },
+  },
+  watch: {
+    imageURL(value) {
+      if (value !== null && value !== undefined) {
+        this.imageUrl = value;
+      }
     },
   },
 };

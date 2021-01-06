@@ -12,6 +12,7 @@ export const store = new Vuex.Store({
     loading: false,
     error: null,
     success: null,
+    imageURL: null,
   },
   mutations: {
     setLoadedMeetups(state, payload) {
@@ -22,6 +23,9 @@ export const store = new Vuex.Store({
     },
     setUser(state, payload) {
       state.user = payload;
+    },
+    setImage(state, payload) {
+      state.imageURL = payload;
     },
     setLoading(state, payload) {
       state.loading = payload;
@@ -78,7 +82,7 @@ export const store = new Vuex.Store({
         description: payload.description,
         date: payload.date.toISOString(),
         size: payload.size,
-        creatorId: getters.user.id
+        creatorId: getters.user.id,
       };
       const rawMeetup = {
         title: payload.title,
@@ -165,11 +169,25 @@ export const store = new Vuex.Store({
         });
     },
     autoLogin({ commit }, payload) {
-      commit('setUser', {id: payload.uid, registeredMeetups:[]});
+      commit('setUser', { id: payload.uid, registeredMeetups: [] });
     },
-    logout({commit}){
+    logout({ commit }) {
       firebase.default.auth().signOut();
-      commit('setUser', null)
+      commit('setUser', null);
+    },
+    uploadImage({ commit }, payload) {
+      commit('setLoading', true);
+      const ext = payload.name.slice(payload.name.lastIndexOf('.'));
+      // console.log(ext);
+      let name = `meetup_${Date.now()}${ext}`;
+      let storageRef = firebase.default.storage().ref('/meetup_images/' + name);
+      storageRef.put(payload).then(async (d) => {
+        let downloadURL = await d.ref.getDownloadURL();
+        // alert(downloadURL);
+        console.log('File available at', downloadURL);
+        commit('setImage', downloadURL);
+        commit('setLoading', false);
+      });
     },
   },
   getters: {
@@ -190,6 +208,9 @@ export const store = new Vuex.Store({
     },
     user(state) {
       return state.user;
+    },
+    uploadedImage(state) {
+      return state.imageURL;
     },
     error(state) {
       return state.error;
