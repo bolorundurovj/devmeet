@@ -21,6 +21,27 @@ export const store = new Vuex.Store({
     createMeetup(state, payload) {
       state.loadedMeetups.push(payload);
     },
+    updateMeetup(state, payload) {
+      const meetup = state.loadedMeetups.find((meetup) => {
+        return meetup.id === payload.id;
+      });
+      if (payload.title) {
+        meetup.title = payload.title;
+      }
+      if (payload.description) {
+        meetup.description = payload.description;
+      }
+      if (payload.date) {
+        meetup.date = payload.date;
+      }
+      if (payload.size) {
+        meetup.size = payload.size;
+      }
+      if (payload.imageUrl) {
+        meetup.imageUrl = payload.imageUrl;
+      }
+      state.loadedMeetups.push(payload);
+    },
     setUser(state, payload) {
       state.user = payload;
     },
@@ -75,6 +96,7 @@ export const store = new Vuex.Store({
         });
     },
     createMeetup({ commit, getters }, payload) {
+      commit('setLoading', true);
       const meetup = {
         title: payload.title,
         location: payload.location,
@@ -99,9 +121,47 @@ export const store = new Vuex.Store({
         .then((data) => {
           const key = data.key;
           commit('createMeetup', { ...rawMeetup, id: key });
+          commit('setLoading', false);
         })
         .catch((err) => {
           alert(err);
+          commit('setLoading', false);
+        });
+    },
+    updateMeetupDetails({ commit }, payload) {
+      commit('setLoading', true);
+      const updateObj = {
+        id: payload.id,
+      };
+      if (payload.title) {
+        updateObj.title = payload.title;
+      }
+      if (payload.description) {
+        updateObj.description = payload.description;
+      }
+      if (payload.date) {
+        updateObj.date = payload.date;
+      }
+      if (payload.size) {
+        updateObj.size = payload.size;
+      }
+      if (payload.imageUrl) {
+        updateObj.imageUrl = payload.imageUrl;
+      }
+      firebase.default
+        .database()
+        .ref('meetups')
+        .child(payload.id)
+        .update(updateObj)
+        .then((data) => {
+          console.log(updateObj);
+          commit('updateMeetup', updateObj);
+          commit('setLoading', false);
+        })
+        .catch((err) => {
+          // alert(err);
+          console.log(err);
+          commit('setLoading', false);
         });
     },
     signUserUp({ commit }, payload) {
