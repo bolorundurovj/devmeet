@@ -60,6 +60,16 @@ export const store = new Vuex.Store({
     registerMeetup(state, payload) {
       state.user.registeredMeetups.push(payload);
     },
+    unregisterMeetup(state, payload) {
+      let meetups = state.user.registeredMeetups;
+      for (var i = 0; i < meetups.length; i++) {
+        if (meetups[i] === payload) {
+          meetups.splice(i, 1);
+          i--;
+        }
+      }
+      state.user.registeredMeetups = meetups;
+    },
     setUser(state, payload) {
       state.user = payload;
     },
@@ -212,8 +222,31 @@ export const store = new Vuex.Store({
         })
         .then((data) => {
           console.log(data);
-          alert("Registered Successfully")
+          alert('Registered Successfully');
           commit('registerMeetup', payload.mid);
+          commit('setLoading', false);
+        })
+        .catch((err) => {
+          alert(err);
+          commit('setLoading', false);
+        });
+    },
+    unregisterMeetup({ commit, getters }, payload) {
+      const userId = getters.user.id;
+      commit('setLoading', true);
+      firebase.default
+        .firestore()
+        .collection('meetup_users')
+        .doc(userId)
+        .update({
+          registeredMeetups: firebase.default.firestore.FieldValue.arrayRemove(
+            payload.mid
+          ),
+        })
+        .then((data) => {
+          console.log(data);
+          alert('Unregistered Successfully');
+          commit('unregisterMeetup', payload.mid);
           commit('setLoading', false);
         })
         .catch((err) => {
@@ -286,7 +319,10 @@ export const store = new Vuex.Store({
         });
     },
     autoLogin({ commit }, payload) {
-      commit('setUser', { id: payload.uid, registeredMeetups: payload.data.registeredMeetups });
+      commit('setUser', {
+        id: payload.uid,
+        registeredMeetups: payload.data.registeredMeetups,
+      });
     },
     logout({ commit }) {
       firebase.default.auth().signOut();
