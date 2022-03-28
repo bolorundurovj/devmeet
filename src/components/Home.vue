@@ -12,9 +12,17 @@
         >
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <v-layout row wrap justify-center class="text-center" v-if="loading">
+      <v-flex>
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+      </v-flex>
+    </v-layout>
+    <v-layout row wrap v-if="!loading">
       <v-flex xs12>
-        <v-carousel style="cursor: pointer">
+        <v-carousel style="cursor: pointer" v-if="meetups.length > 0">
           <v-carousel-item
             v-for="meetup in meetups"
             :key="meetup.id"
@@ -30,7 +38,10 @@
     </v-layout>
     <v-layout row wrap justify-center class="mb-4 mt-2 justify-content-center">
       <v-flex xs12 class="text-center mb-4">
-        <p class="mx-auto">Join Our Awesome Meetups</p>
+        <p class="mx-auto" v-if="meetups.length > 0">
+          Join Our Awesome Meetups
+        </p>
+        <p class="mx-auto" v-if="meetups.length < 1">No meetups yet</p>
       </v-flex>
     </v-layout>
   </v-container>
@@ -41,6 +52,9 @@ export default {
   computed: {
     meetups() {
       return this.$store.getters.featuredMeetups;
+    },
+    loading() {
+      return this.$store.getters.loading;
     },
   },
   methods: {

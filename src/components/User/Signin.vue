@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <app-alert
+      v-if="error"
+      @dismissed="onDismissed"
+      :text="error.message"
+    ></app-alert>
     <v-layout row justify-center>
       <v-flex xs11 sm8 md8>
         <v-card elevation="2" class="py-4 px-8 mt-4" md8>
@@ -20,14 +25,18 @@
             ></v-text-field>
 
             <v-btn
-              :disabled="!valid"
+              :loading="loading"
+              :disabled="loading || !valid"
               color="success"
-              class="mr-4"
               @click="onSignin"
             >
               Sign In
+              <template v-slot:loader>
+                <span class="custom-loader">
+                  <v-icon light>mdi-cached</v-icon>
+                </span>
+              </template>
             </v-btn>
-            {{ valid }}
           </v-form>
         </v-card>
       </v-flex>
@@ -49,6 +58,12 @@ export default {
   computed: {
     user() {
       return this.$store.getters.user;
+    },
+    error() {
+      return this.$store.getters.error;
+    },
+    loading() {
+      return this.$store.getters.loading;
     },
   },
   watch: {
@@ -72,6 +87,9 @@ export default {
       } else {
         alert("Please fill the form");
       }
+    },
+    onDismissed() {
+      this.$store.dispatch("clearError");
     },
   },
 };
