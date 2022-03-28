@@ -17,14 +17,14 @@ new Vue({
   render: (h) => h(App),
   created: () => {
     firebase.default.initializeApp({
-      apiKey: 'AIzaSyCsD6A0sSG15YL2d9yXsRgrpq5QLyjUhLU',
-      authDomain: 'my-dev-project-44a63.firebaseapp.com',
-      databaseURL: 'https://my-dev-project-44a63.firebaseio.com',
-      projectId: 'my-dev-project-44a63',
-      storageBucket: 'my-dev-project-44a63.appspot.com',
-      messagingSenderId: '525950512424',
-      appId: '1:525950512424:web:3e55214cd53533c93e741d',
-      measurementId: 'G-3HQG4EJCJF',
+      apiKey: '',
+      authDomain: '',
+      databaseURL: '',
+      projectId: '',
+      storageBucket: '',
+      messagingSenderId: '',
+      appId: '',
+      measurementId: '',
     });
   },
 }).$mount('#app');
